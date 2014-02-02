@@ -1,5 +1,7 @@
 <h2>Create new rating</h2>
 
+<p id="notice"> <%= notice %> </p>
+
 <%= form_for(@rating) do |f| %>
   <% if @rating.errors.any? %>
     <div id="error_explanation">
