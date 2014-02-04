@@ -1,0 +1,16 @@
+language: ruby
+rvm:
+- 2.0.0
+script:
+- bundle exec rake db:migrate --trace
+- RAILS_ENV=test bundle exec rake db:migrate --trace
+- bundle exec rake db:test:prepare
+- bundle exec rspec -fd spec/
+deploy:
+  provider: heroku
+  api_key:
+    secure: Xj59sMqR0vA+oApK+RWg2bF3iBmw8Vb3jMWAvPe4iODMPO5n63bkdRaRJbxr/MLNs4BkdeGQeYr+RNYWYKSuDLqK61fRjUUGOWi63gBnxH7+pg2CvHBy65UoCVYFXjVk5dAaSo3uuT4VcfMccfhPh1JSoEydw4PL/zYSd1L9XG4=
+  app: enigmatic-reef-7106
+  on:
+    repo: JiriHamberg/WePa14
+  run: "rake db:migrate"

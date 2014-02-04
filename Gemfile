@@ -10,7 +10,16 @@ gem 'debugger', group: [:development, :test]
 # Use sqlite3 as the database for Active Record on develepment
 group :development, :test do
   gem 'sqlite3'
+  gem 'rspec-rails', '~> 2.14.1'
 end
+
+group :test do
+  gem 'simplecov', require: false
+  gem 'factory_girl_rails'
+  gem 'capybara'
+  gem 'launchy'
+end
+
 # Use postgreSQL on production
 group :production do
    gem 'pg'
