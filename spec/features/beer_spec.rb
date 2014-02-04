@@ -5,7 +5,12 @@ include OwnTestHelper
 describe "Beer" do
   let!(:brewery) { FactoryGirl.create :brewery, name:"Koff" }
 
+  before :each do
+    @user = FactoryGirl.create :user
+  end
+
   it "when created, is registered to given brewery when name is valid" do
+    sign_in(username:"Pekka", password:"Foobar1")
     visit new_beer_path
     select('Koff', from: 'beer[brewery_id]')
     fill_in('beer[name]', with: 'Mallas V')
@@ -17,6 +22,7 @@ describe "Beer" do
   end
 
   it "when created, is rejected if name not valid" do
+    sign_in(username:"Pekka", password:"Foobar1")
     visit new_beer_path
     select('Koff', from: 'beer[brewery_id]')
     fill_in('beer[name]', with: '')
