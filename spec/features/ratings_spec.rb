@@ -3,9 +3,10 @@ require 'spec_helper'
 include OwnTestHelper
 
 describe "Rating" do
+  let!(:style) {FactoryGirl.create :style}
   let!(:brewery) { FactoryGirl.create :brewery, name:"Koff" }
-  let!(:beer1) { FactoryGirl.create :beer, name:"iso 3", brewery:brewery }
-  let!(:beer2) { FactoryGirl.create :beer, name:"Karhu", brewery:brewery }
+  let!(:beer1) { FactoryGirl.create :beer, name:"iso 3", brewery:brewery, style:style }
+  let!(:beer2) { FactoryGirl.create :beer, name:"Karhu", brewery:brewery, style:style }
   let!(:user) { FactoryGirl.create :user }
 
   before :each do

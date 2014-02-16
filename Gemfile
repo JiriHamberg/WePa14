@@ -7,6 +7,10 @@ gem 'bcrypt-ruby', '~> 3.1.2'
 
 gem 'debugger', group: [:development, :test]
 
+gem 'httparty'
+
+gem "rails-settings-cached", "0.3.1"
+
 # Use sqlite3 as the database for Active Record on develepment
 group :development, :test do
   gem 'sqlite3'
@@ -18,6 +22,7 @@ group :test do
   gem 'factory_girl_rails'
   gem 'capybara'
   gem 'launchy'
+  gem 'webmock'
 end
 
 # Use postgreSQL on production

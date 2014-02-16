@@ -7,12 +7,14 @@ describe "Beer" do
 
   before :each do
     @user = FactoryGirl.create :user
+    @style = FactoryGirl.create :style
   end
 
   it "when created, is registered to given brewery when name is valid" do
     sign_in(username:"Pekka", password:"Foobar1")
     visit new_beer_path
     select('Koff', from: 'beer[brewery_id]')
+    select('Lager', from: 'beer[style_id]')
     fill_in('beer[name]', with: 'Mallas V')
     expect {
       click_button 'Create Beer'     

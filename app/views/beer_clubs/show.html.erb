@@ -14,6 +14,13 @@
   <%= @beer_club.city %>
 </p>
 
+ <% if current_user and not current_user.memberships.any? { |m| m.beer_club == @beer_club } %>
+   <%= form_for(@membership) do |f| %>
+      <%= f.hidden_field :beer_club_id %>
+      <%= f.submit value:"join the club" %>
+   <% end %>
+<% end %>
+
 <h2> Members </h2>
   <ul>
     <% @beer_club.users.each do |user| %>

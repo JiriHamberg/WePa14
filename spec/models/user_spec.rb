@@ -16,6 +16,7 @@ describe User do
 
   describe "favourite beer" do
     let(:user){FactoryGirl.create(:user) }
+    let(:style){FactoryGirl.create(:style)}
 
     it "has method for determining one" do
       user.should respond_to :favourite_beer
@@ -26,14 +27,14 @@ describe User do
     end
 
     it "is the only rated if only one rating" do
-      beer = create_beer_with_rating(10, user)
+      beer = create_beer_with_rating(10, user, style)
 
       expect(user.favourite_beer).to eq(beer)
     end
 
     it "is the one with highest rating if several rated" do
-      create_beers_with_ratings(10, 20, 15, 7, 9, user)
-      best = create_beer_with_rating(25, user)
+      create_beers_with_ratings(10, 20, 15, 7, 9, user, style)
+      best = create_beer_with_rating(25, user, style)
 
       expect(user.favourite_beer).to eq(best)
     end
@@ -74,6 +75,7 @@ describe User do
 
   describe "favourite style" do
     let(:user) { FactoryGirl.create(:user) }
+    let(:style) { FactoryGirl.create(:style) }
 
     it "has a method for determining one" do
       user.should respond_to :favourite_style
@@ -84,16 +86,16 @@ describe User do
     end
 
     it "should return the style of the only rated beer" do
-      style = "IPA"
+      style = FactoryGirl.create :style, name: "IPA"
       create_beer_with_rating_of_style(11, user, style)
       expect(user.favourite_style).to eq(style)
     end
 
     it "should return the style with highest average ratings by the user" do
-      best_style = "Pale Ale"
-      create_beers_with_ratings_of_style(2, 15, 5, 8, 14, 3, 9, user, "Lager")
+      best_style = FactoryGirl.create :style, name:"Pale ale"
+      create_beers_with_ratings_of_style(2, 15, 5, 8, 14, 3, 9, user, FactoryGirl.create(:style, name:"Lager"))
       create_beers_with_ratings_of_style(10, 20, 25, 9, user, best_style)
-      create_beers_with_ratings_of_style(5, 24, 20, 14, 8, user, "IPA")
+      create_beers_with_ratings_of_style(5, 24, 20, 14, 8, user, FactoryGirl.create(:style, name:"IPA"))
 
       expect(user.favourite_style).to eq(best_style)
     end
@@ -102,7 +104,7 @@ describe User do
   describe "favourite brewery" do
     let(:user) { FactoryGirl.create(:user) }
     let(:best_brewery) { FactoryGirl.create(:brewery) }
-
+    let(:style) {FactoryGirl.create(:style)}
 
     it "has a method for determining one" do
       user.should respond_to :favourite_brewery
@@ -113,7 +115,7 @@ describe User do
     end
 
     it "should return the brewery of the only rated beer" do
-      create_beer_with_rating_of_brewery(12, user, best_brewery)
+      create_beer_with_rating_of_brewery(12, user, best_brewery, style)
 
       expect(user.favourite_brewery).to eq(best_brewery)
     end
@@ -121,9 +123,9 @@ describe User do
     it "should return the brewery with highest average ratings by the user" do
       brewery1 = FactoryGirl.create(:brewery, name: "Poor Brewery")
       brewery2 = FactoryGirl.create(:brewery, name: "Another Poor Brewery")
-      create_beers_with_ratings_of_brewery(2, 15, 5, 8, 14, 3, 9, user, brewery1)
-      create_beers_with_ratings_of_brewery(10, 20, 25, 9, user, best_brewery)
-      create_beers_with_ratings_of_brewery(5, 24, 20, 14, 8, user, brewery2)
+      create_beers_with_ratings_of_brewery(2, 15, 5, 8, 14, 3, 9, user, brewery1, style)
+      create_beers_with_ratings_of_brewery(10, 20, 25, 9, user, best_brewery, style)
+      create_beers_with_ratings_of_brewery(5, 24, 20, 14, 8, user, brewery2, style)
 
       expect(user.favourite_brewery).to eq(best_brewery)
     end
@@ -131,15 +133,15 @@ describe User do
 
 end
 
-def create_beer_with_rating(score, user)
-  beer = FactoryGirl.create(:beer)
+def create_beer_with_rating(score, user, style)
+  beer = FactoryGirl.create(:beer, style:style)
   FactoryGirl.create(:rating, score:score, beer:beer, user:user)
   beer
 end
 
-def create_beers_with_ratings(*scores, user)
+def create_beers_with_ratings(*scores, user, style)
   scores.each do |score|
-    create_beer_with_rating(score, user)
+    create_beer_with_rating(score, user, style)
   end
 end
 
@@ -155,14 +157,14 @@ def create_beers_with_ratings_of_style(*scores, user, style)
   end
 end
 
-def create_beer_with_rating_of_brewery(score, user, brewery)
-  beer = FactoryGirl.create(:beer, brewery:brewery)
+def create_beer_with_rating_of_brewery(score, user, brewery, style)
+  beer = FactoryGirl.create(:beer, brewery:brewery, style:style)
   FactoryGirl.create(:rating, score:score, beer:beer, user:user)
   beer
 end
 
-def create_beers_with_ratings_of_brewery(*scores, user, brewery)
+def create_beers_with_ratings_of_brewery(*scores, user, brewery, style)
   scores.each do |score|
-    create_beer_with_rating_of_brewery(score, user, brewery)
+    create_beer_with_rating_of_brewery(score, user, brewery, style)
   end
 end

@@ -1,0 +1,13 @@
+<% if @place %>
+  <h2> <%= @place["name"] %> </h2>
+
+  <p> <%= @place["street"] %> </p>
+
+  <p> <%= @place["zip"] %> </p>
+
+  <iframe src="<%= @place["blogmap"] %>" height="250px" width="350px" >Map showing the place</iframe>
+
+<% else %>
+  <p> Could not find a place with given id </p>
+
+<% end %>

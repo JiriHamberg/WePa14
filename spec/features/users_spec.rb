@@ -5,6 +5,7 @@ include OwnTestHelper
 describe "User" do
   before :each do
     @user = FactoryGirl.create :user
+    @style = FactoryGirl.create :style
   end
 
   describe "who has signed up" do
@@ -24,7 +25,7 @@ describe "User" do
 
     it "can see all his/her ratings on his/her page" do
       scores = [11, 13, 22, 14, 15, 16]
-      beer = FactoryGirl.create :beer
+      beer = FactoryGirl.create :beer, style: @style
       create_ratings *scores, @user, beer
 
       visit user_path(@user)
@@ -35,7 +36,7 @@ describe "User" do
 
     it "can not see ratings created by others on his/her page" do
       scores = [11, 13, 22, 14, 15, 16]
-      beer = FactoryGirl.create :beer
+      beer = FactoryGirl.create :beer, style: @style
       create_ratings *scores, FactoryGirl.create(:user, username:"Other"), beer
 
       visit user_path(@user)
@@ -46,7 +47,7 @@ describe "User" do
 
     it "will see his/her favourite beer, beer style and brewery on his/her page" do
       brewery = FactoryGirl.create(:brewery)
-      beer = FactoryGirl.create(:beer, brewery:brewery)
+      beer = FactoryGirl.create(:beer, brewery:brewery, style:@style)
       rating = FactoryGirl.create(:rating, user:@user, beer:beer)
 
       visit user_path(@user)

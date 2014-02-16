@@ -1,0 +1,23 @@
+<p id="notice"><%= notice %></p>
+
+<h2>
+  <%= @style.name %>
+</h2>
+
+<p>
+  <%= @style.description %>
+</p>
+
+<h4> beers </h4>
+<ul>
+
+  <% @style.beers.each do |beer| %>
+    <li>
+      <%= link_to beer, beer_path(beer.id) %>
+     </li>
+  <% end %>
+
+</ul>
+
+<%= link_to 'Edit', edit_style_path(@style) if current_user %> 
+<%= link_to 'Destroy', @style, method: :delete, data: { confirm: 'Are you sure?' } if current_user_admin? %>
