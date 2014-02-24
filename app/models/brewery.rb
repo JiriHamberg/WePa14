@@ -1,11 +1,14 @@
 class Brewery < ActiveRecord::Base
 	include RatingAverage
-	
-  validates :name, presence: true
-  validate :valid_year
 
-	has_many :beers, :dependent => :destroy
-	has_many :ratings, :through => :beers
+  validates :name, presence: true
+  validates :year, numericality: { less_than_or_equal_to: ->(_) { Time.now.year} }
+
+  scope :active, -> { where active:true }
+  scope :retired, -> { where active:[nil,false] }
+
+  has_many :beers, :dependent => :destroy
+  has_many :ratings, :through => :beers
 
   def print_report
     puts name
@@ -29,5 +32,13 @@ class Brewery < ActiveRecord::Base
   def to_s
     "#{name}"
   end
+
+  #def self.top(n)
+  #  avg_ratings = self.all.reduce({}) do |set, brewery|
+  #    set[brewery] = brewery.average_rating.nan? ? 0 : brewery.average_rating
+  #    set
+  #  end
+  #  avg_ratings.sort_by{|key, val| -val}.first n
+  #end
 
 end

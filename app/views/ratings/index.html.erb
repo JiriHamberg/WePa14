@@ -1,13 +1,42 @@
 
 <p>
-total number of ratings: <%= @ratings.size %>
+total number of ratings: <%= @rating_count %>
 </p> 
-<h2> List of ratings </h2>
-
+<h2> Top rated beers </h2>
 <ul>
- <% @ratings.each do |rating| %>
-   <li> <%= rating %> <%= link_to rating.user.username, user_path(rating.user.id)%> </li>
- <% end %>
+  <% @best_beers.each do |beer| %>
+    <li> <%= link_to beer, beer_path(beer) %> </li>
+  <% end %>
 </ul>
 
-<%= link_to "New rating", new_rating_path %> 
+<h2> Top rated styles </h2>
+<ul>
+  <% @best_styles.each do |style| %>
+    <li> <%= link_to style, style_path(style) %> </li>
+  <% end %>
+</ul>
+
+<h2> Top rated breweries </h2>
+<ul>
+  <% @best_breweries.each do |brewery| %>
+    <li> <%= link_to brewery, brewery_path(brewery) %> </li>
+  <% end %>
+</ul>
+
+<h2> Most active raters</h2>
+<ul>
+  <% @active_raters.each do |user| %>
+    <li> <%= link_to user.username, user_path(user) %> </li>
+  <% end %>
+</ul>
+
+<h2> Most recent ratings </h2>
+<ul>
+  <% @recent.each do |rating| %>
+    <li> <%= "#{rating} by " %>
+         <%= link_to rating.user.username, user_path(rating.user) %>
+     </li>
+  <% end %>
+</ul>
+
+<%= link_to "New rating", new_rating_path, class: "btn btn-primary" if current_user %> 

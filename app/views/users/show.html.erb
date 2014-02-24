@@ -7,8 +7,8 @@
 
 <% if current_user == @user %>
   <p>
-    <%= link_to 'Edit profile', edit_user_path(@user) %>
-    <%= link_to 'Delete profile', @user, method: :delete, data: { confirm: 'Are you sure? Your user profile will be permanently removed.' } %>
+    <%= link_to 'Edit profile', edit_user_path(@user), class: "btn btn-primary" %>
+    <%= link_to 'Delete profile', @user, method: :delete, class: "btn btn-danger", data: { confirm: 'Are you sure? Your user profile will be permanently removed.' } %> 
   </p>
 <% end %>
 

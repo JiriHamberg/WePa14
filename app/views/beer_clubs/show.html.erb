@@ -14,7 +14,7 @@
   <%= @beer_club.city %>
 </p>
 
- <% if current_user and not current_user.memberships.any? { |m| m.beer_club == @beer_club } %>
+ <% if current_user and not is_member_of(@beer_club) %>
    <%= form_for(@membership) do |f| %>
       <%= f.hidden_field :beer_club_id %>
       <%= f.submit value:"join the club" %>
@@ -23,12 +23,25 @@
 
 <h2> Members </h2>
   <ul>
-    <% @beer_club.users.each do |user| %>
+    <% @beer_club.confirmed_members.each do |user| %>
       <li>
         <%= link_to user.username, user_path(user.id) %>
       </li>
     <% end %>
   </ul>
 
-<%= link_to 'Edit', edit_beer_club_path(@beer_club) if current_user %>
-<%= link_to 'Destroy', @beer_club, method: :delete, data: { confirm: 'Are you sure?' } if current_user_admin? %>
+<% if is_member_of(@beer_club) %>
+  <h2> Outstanding applications </h2>
+    <ul>
+      <% @beer_club.applied_members.each do |user| %>
+        <li>
+          <%= link_to user.username, user_path(user.id) %>
+          <%= link_to "confirm", confirm_membership_membership_path(get_application(@beer_club, user)), method: :post, class: "btn btn-primary" %>
+        </li>
+      <% end %>
+    </ul>
+<% end %>
+
+
+<%= link_to 'Edit', edit_beer_club_path(@beer_club), class: "btn btn-primary" if current_user %>
+<%= link_to 'Destroy', @beer_club, method: :delete, class: "btn btn-danger", data: { confirm: 'Are you sure?' } if current_user_admin? %>

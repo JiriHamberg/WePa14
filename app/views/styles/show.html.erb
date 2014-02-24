@@ -19,5 +19,4 @@
 
 </ul>
 
-<%= link_to 'Edit', edit_style_path(@style) if current_user %> 
-<%= link_to 'Destroy', @style, method: :delete, data: { confirm: 'Are you sure?' } if current_user_admin? %>
+<%= edit_and_destroy_buttons(@style) %>

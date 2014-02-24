@@ -21,6 +21,13 @@ class MembershipsController < ApplicationController
   def edit
   end
 
+  def confirm_membership
+    id = params[:id]
+    m = Membership.find_by id: id
+    m.update_attribute(:confirmed, true) if m and current_user.is_member_of(m.beer_club)
+    redirect_to :back
+  end
+
   # POST /memberships
   # POST /memberships.json
   def create

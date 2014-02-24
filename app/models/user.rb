@@ -14,6 +14,10 @@ class User < ActiveRecord::Base
   has_many :memberships, :dependent => :destroy
   has_many :beer_clubs, through: :memberships
 
+  def is_member_of(beer_club)
+    memberships.any? { |membership| membership.beer_club == beer_club and membership.confirmed}
+  end
+
   def favourite_beer
     return nil if ratings.empty?
     ratings.order(score: :desc).limit(1).last.beer
@@ -25,6 +29,14 @@ class User < ActiveRecord::Base
 
   def favourite_brewery
     key_with_highest_average_by :brewery
+  end
+
+  def self.active_raters(n)
+    ratings_by_user = self.all.reduce({}) do |set, user|
+      set[user] = user.ratings.size
+      set
+    end
+    ratings_by_user.sort_by{|key, val| -val}.first(n).collect{|key, val| key}
   end
 
   private 

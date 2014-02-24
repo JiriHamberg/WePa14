@@ -11,6 +11,16 @@ gem 'httparty'
 
 gem "rails-settings-cached", "0.3.1"
 
+gem 'jquery-turbolinks'
+
+gem 'bootstrap-sass'
+
+gem 'rack-mini-profiler'
+
+group :development do
+  gem 'rails_layout'
+end
+
 # Use sqlite3 as the database for Active Record on develepment
 group :development, :test do
   gem 'sqlite3'
@@ -23,6 +33,8 @@ group :test do
   gem 'capybara'
   gem 'launchy'
   gem 'webmock'
+  gem 'selenium-webdriver'
+  gem 'database_cleaner', '< 1.1.0' 
 end
 
 # Use postgreSQL on production
